@@ -1,18 +1,27 @@
-leftcol = []
-rightcol = []
-sumdiff = 0
+leftCol, rightCol, sumDiff  = [], [], 0
+simScoreLookup, simScoreTotal = {}, 0
 
 with open('input.txt') as fh:
     for line in fh:
         [left, right] = line.split()
-        leftcol.append(int(left))
-        rightcol.append(int(right))
+        leftCol.append(int(left))
+        rightCol.append(int(right))
 
 # sorting the columns
-leftcol.sort()
-rightcol.sort()
+leftCol.sort()
+rightCol.sort()
 
-for i in range(len(leftcol)):
-    sumdiff += abs(leftcol[i] - rightcol[i])
+for i in range(len(leftCol)):
+    ## Sum of Differences calculation
+    sumDiff += abs(leftCol[i] - rightCol[i])
 
-print(sumdiff)
+    ## Similarity Score calculation
+    if leftCol[i] in simScoreLookup:
+        simScoreTotal += simScoreLookup[leftCol[i]]
+    else:
+        count = rightCol.count(leftCol[i])
+        simScoreLookup[leftCol[i]] = count * leftCol[i]
+        simScoreTotal += simScoreLookup[leftCol[i]]
+
+print("Sum of Differences:", sumDiff)
+print("Similarity Score:", simScoreTotal)
